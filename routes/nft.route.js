@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/nft.controller');
+const controller = require('../controllers/NFT.controller');
 
-router.post('/create', controller.create);
+router.post('/mint', controller.mint);
 
 module.exports = router;
