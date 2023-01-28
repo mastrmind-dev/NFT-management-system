@@ -10,11 +10,9 @@
   },
   "keywords": [
     "node",
-    "express",
-    "surge",
-    "assessment"
+    "express"
   ],
-  "author": "Thiwanka Shan",
+  "author": "Elzian Agro Pvt Ltd",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
