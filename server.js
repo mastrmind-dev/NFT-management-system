@@ -1,14 +1,17 @@
-require('dotenv').config();
 const express = require('express');
-const cookieParser = require('cookie-parser');
+const cors = require('cors');
+
 const NFTRouter = require('./routes/NFT.route');
-// const { authorize } = require('./middleware/auth.middleware');
+
+require('dotenv').config();
 
 const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cookieParser());
+app.use(cors({
+    // origin: "http://er.webbackend.sample"
+}))
 
 // routes
 app.use('/api/nft', NFTRouter);
