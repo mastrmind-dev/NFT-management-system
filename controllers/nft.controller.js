@@ -7,9 +7,10 @@ exports.auth = async (req, res) => {
         address: "https://er.webbackend.sample"
     }
     try {
-        const { authenticationKey } = req.body;
-        if (authenticationKey === process.env.AUTHENTICATION_KEY) {
+        const { password } = req.body;
+        if (password === process.env.PASSWORD) {
             jwt.sign({ incomer }, 'secretkey', (err, token) => {
+                if (err) res.sendStatus(500);
                 res.status(200).json({ token })
             })
         } else {
@@ -30,8 +31,13 @@ exports.mint = async (req, res) => {
             if (error) {
                 res.status(403).json({ error: error.message })
             } else {
-                const URI = await Pinata.upload(req.body);
-                res.status(200).json({ URI, AuthData: authData });
+                try{
+                    const URI = await Pinata.upload(req.body);
+                    res.status(200).json({ URI, AuthData: authData });
+                }catch(error){
+                    console.log("error:",error)
+                    res.status(500).json({error:error.message})
+                }
             }
         })
     } catch (error) {

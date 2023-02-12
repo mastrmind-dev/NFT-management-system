@@ -1,14 +1,20 @@
-exports.upload = async (nftMetadata) => {
-    // use Pianta SDK for uploading metadata to IPFS and generate uri
-    const URI = await pinataUpload("https://i.ibb.co/NSBGXT8/Whats-App-Image-2023-01-26-at-08-11-53-1.jpg", nftMetadata);
-    return URI;
+exports.upload = async (nftData) => {
+    const { imageUrl } = nftData;
+    delete nftData.imageUrl;
+    delete nftData.walletAddress;
+    try {
+        const URI = await pinataUpload(imageUrl, nftData);
+        return URI;
+    } catch (error) {
+        console.log("error:",error);
+    }
 }
 
 const pinataUpload = async (sourceUrl, nftMetadata) => {
     const axios = require("axios");
     const axiosRetry = require("axios-retry");
     const FormData = require("form-data");
-    const jwtToken = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJjMjQ0OTkxMS00MjQxLTRiMmUtOTgwNS1hOTE1N2U5ZDdmYTgiLCJlbWFpbCI6InNhcHRoYWthLm1vcmFoZWxhQGVsemlhbi5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX0seyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiYzhlZTQ1YTgyZjIwMmYzZWMyMGYiLCJzY29wZWRLZXlTZWNyZXQiOiI5MzZhMGRhYzg2N2FlOTJjZGUxODk0YjM0MjUwM2U0YzM1NDczOTg0NTg3OGYzYzg0MGJiNDc0ZWRlNjM4ZmM1IiwiaWF0IjoxNjc2MDM1NjY5fQ.3-t_H4pGcKg4WOQCT0ixVAw5qXHZHRF-yILlC0AYfR4`
+    const jwtToken = `Bearer ${process.env.JWT_TOKEN}`
 
     const uploadImageToPinata = async (sourceUrl) => {
 
