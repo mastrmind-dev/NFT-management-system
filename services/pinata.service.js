@@ -1,3 +1,5 @@
+const ErrorConstants = require("../constants/Error")
+
 exports.upload = async (nftData) => {
     const { imageUrl } = nftData;
     delete nftData.imageUrl;
@@ -6,7 +8,7 @@ exports.upload = async (nftData) => {
         const URI = await pinataUpload(imageUrl, nftData);
         return URI;
     } catch (error) {
-        console.log("error:",error);
+        console.log("error:", error);
     }
 }
 
@@ -29,6 +31,7 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
             });
             data.append(`file`, response.data);
         } catch (e) {
+            console.log(ErrorConstants.IMAGE_DOES_NOT_GET_CONVERTED_TO_FORM_DATA);
             console.log("error:", e.message)
         }
         try {
@@ -42,6 +45,7 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
             console.log("res data:", res.data);
             return res.data.IpfsHash;
         } catch (error) {
+            console.log(ErrorConstants.IMAGE_DOES_NOT_GET_UPLOADED_TO_PINATA);
             console.log("error:", error)
         }
     };
@@ -64,7 +68,7 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
             }
         });
 
-        var config = {
+        let config = {
             method: 'post',
             url: 'https://api.pinata.cloud/pinning/pinJSONToIPFS',
             headers: {
@@ -74,14 +78,20 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
             data: data
         };
 
-        const res = await axios(config);
-        return res.data.IpfsHash;
+        try {
+            const res = await axios(config);
+            return res.data.IpfsHash;
+        } catch (error) {
+            console.log(ErrorConstants.METADATA_DOES_NOT_GET_UPLOADED_TO_PINATA);
+            console.log("error:", error.message)
+        }
     }
 
-    const imageIPFSUri = await uploadImageToPinata(sourceUrl);
-    const imageUri = `https://gateway.pinata.cloud/ipfs/${imageIPFSUri}`;
-
-    const metadataIPFSUri = await uploadMetadataToPinata(nftMetadata, imageUri);
-    const metadataUri = `https://gateway.pinata.cloud/ipfs/${metadataIPFSUri}`;
-    return metadataUri;
+    await uploadImageToPinata(sourceUrl).then(async (imageIPFSUri) => {
+        const imageUri = `https://gateway.pinata.cloud/ipfs/${imageIPFSUri}`;
+        await uploadMetadataToPinata(nftMetadata, imageUri).then((metadataIPFSUri) => {
+            const metadataUri = `https://gateway.pinata.cloud/ipfs/${metadataIPFSUri}`;
+            return metadataUri;
+        })
+    })
 }
