@@ -1,4 +1,4 @@
-const ErrorConstants = require("../constants/Error")
+const ErrorConstants = require("../constants/Error.js");
 
 exports.upload = async (nftData) => {
     const { imageUrl } = nftData;
@@ -24,6 +24,7 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
 
         axiosRetry(axiosInstance, { retries: 5 });
         const data = new FormData();
+
         try {
             const response = await axiosInstance(sourceUrl, {
                 method: "GET",
@@ -34,6 +35,7 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
             console.log(ErrorConstants.IMAGE_DOES_NOT_GET_CONVERTED_TO_FORM_DATA);
             console.log("error:", e.message)
         }
+
         try {
             const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
                 maxBodyLength: "Infinity",
@@ -87,11 +89,10 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
         }
     }
 
-    await uploadImageToPinata(sourceUrl).then(async (imageIPFSUri) => {
-        const imageUri = `https://gateway.pinata.cloud/ipfs/${imageIPFSUri}`;
-        await uploadMetadataToPinata(nftMetadata, imageUri).then((metadataIPFSUri) => {
-            const metadataUri = `https://gateway.pinata.cloud/ipfs/${metadataIPFSUri}`;
-            return metadataUri;
-        })
-    })
+    const imageIPFSUri = await uploadImageToPinata(sourceUrl);
+    const imageUri = `https://gateway.pinata.cloud/ipfs/${imageIPFSUri}`;
+
+    const metadataIPFSUri = await uploadMetadataToPinata(nftMetadata, imageUri);
+    const metadataUri = `https://gateway.pinata.cloud/ipfs/${metadataIPFSUri}`;
+    return metadataUri;
 }
