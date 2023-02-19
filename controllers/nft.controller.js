@@ -1,4 +1,7 @@
-const Pinata = require('../services/pinata.service')
+const Pinata = require('../services/pinata.service');
+const Blockchain = require('../services/blockchain/blockchain.service');
+const SuccessConstants = require("../constants/Success");
+const ErrorConstants = require("../constants/Error");
 const jwt = require('jsonwebtoken');
 
 exports.auth = async (req, res) => {
@@ -35,8 +38,8 @@ exports.pin = async (req, res) => {
                     const URI = await Pinata.upload(req.body);
                     res.status(200).json({ URI, AuthData: authData });
                 } catch (error) {
-                    console.log("error:", error)
-                    res.status(500).json({ error: error.message })
+                    console.log("error:", error);
+                    res.status(500).json({ error: error.message });
                 }
             }
         })
@@ -46,7 +49,17 @@ exports.pin = async (req, res) => {
 };
 
 exports.mint = async (req, res) => {
-    res.send({ message: "mint is about to happen..." })
+    const { metadataUri } = req.body;
+    try {
+        const mint = await Blockchain.mint(metadataUri);
+        console.log('Mint result:', mint);
+        if (mint === SuccessConstants.MINTING_SUCCEEDED) {
+            res.status(200).json({ message: "Successfully Minted." })
+        } else { throw new Error(ErrorConstants.MINITING_FAILED); }
+    } catch (e) {
+        console.log(e.message);
+        res.status(500).json({ error: e.message })
+    }
 }
 
 exports.burn = async (req, res) => {
