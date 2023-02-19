@@ -41,8 +41,9 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
                 maxBodyLength: "Infinity",
                 headers: {
                     'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-                    'Authorization': jwtToken
-                }
+                    'Authorization': jwtToken,
+                },
+               timeout: 60000, 
             });
             console.log("res data:", res.data);
             return res.data.IpfsHash;

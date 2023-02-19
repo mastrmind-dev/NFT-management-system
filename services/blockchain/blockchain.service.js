@@ -5,10 +5,11 @@ const SuccessConstants = require("../../constants/Success");
 const myContractArtifact = require("./artifact.json");
 
 const contract = async () => {
-    const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:7545");
-    const wallet = new ethers.Wallet("88ecd07bd22885174c7d756a8aff317e553033c175e74af1399b98e4bcefd703", provider);
+    // CHANGE METADATA JSON FORMAT TO BE SUITABLE TO OPENSEA
+    const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/PPT8_0p08mlvodQAMMxn93kYxlMyf7mG");
+    const wallet = new ethers.Wallet("5da121d1e61c94c5cf5a8cc9ec335e655804829a56ccbb09a0115d2e5c631961", provider);
     const Contract = new ethers.Contract(
-        "0xA51AA032caea12649FE5CCc5b6f78BF2339bFe55",//put contract address into .env file
+        "0x41d4EA524427E25e9b7a0345aEe57e07c5236a3d",//put contract address into .env file
         myContractArtifact.abi,
         wallet
     );
