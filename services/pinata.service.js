@@ -43,7 +43,7 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
                     'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
                     'Authorization': jwtToken,
                 },
-               timeout: 60000, 
+                timeout: 60000,
             });
             console.log("res data:", res.data);
             return res.data.IpfsHash;
@@ -54,6 +54,53 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
     };
 
     const uploadMetadataToPinata = async (nftMetadata, imageUri) => {
+        const openseaMetadataFormat = {
+            description: nftMetadata.Description,
+            external_url: "https://restore.earth",
+            image: imageUri,
+            name: nftMetadata.Name,
+            attributes: [
+                {
+                    "trait_type": "Farmer", 
+                    "value": nftMetadata.FarmerName
+                  }, 
+                  {
+                    "trait_type": "Registration No", 
+                    "value": nftMetadata.RegistrationNo
+                  }, 
+                  {
+                    "trait_type": "Species", 
+                    "value": nftMetadata.Species
+                  }, 
+                  {
+                    "trait_type": "NoOfERUnits", 
+                    "value": nftMetadata.ServicingYear
+                  }, 
+                  {
+                    "trait_type": "Released H2O", 
+                    "value": nftMetadata.H2O
+                  }, 
+                  {
+                    "trait_type": "Released O2", 
+                    "value": nftMetadata.O2
+                  }, 
+                  {
+                    "display_type": "boost_number", 
+                    "trait_type": "Captured Carbon", 
+                    "value": nftMetadata.CapturedCarbon
+                  }, 
+                  {
+                    "display_type": "boost_percentage", 
+                    "trait_type": "Boost percentage test", 
+                    "value": 10
+                  }, 
+                  {
+                    "display_type": "number", 
+                    "trait_type": "Generation", 
+                    "value": 2
+                  }
+            ]
+        }
         var data = JSON.stringify({
             "pinataOptions": {
                 "cidVersion": 1
@@ -66,8 +113,7 @@ const pinataUpload = async (sourceUrl, nftMetadata) => {
                 }
             },
             "pinataContent": {
-                ...nftMetadata,
-                image: imageUri
+                ...openseaMetadataFormat
             }
         });
 

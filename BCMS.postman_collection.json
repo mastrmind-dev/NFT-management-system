@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "1b21a177-e2c1-48c6-9b6d-76bd05e6171b",
+		"name": "BCMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24598346"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/nft/auth",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmNvbWVyIjp7Im5hbWUiOiJ3ZWIgYmFja2VuZCIsImFkZHJlc3MiOiJodHRwczovL2VyLndlYmJhY2tlbmQuc2FtcGxlIn0sImlhdCI6MTY3NjA4MzM4MH0.QXfAOLAIVynVnwch49Tph3xm7gyvFJJYl73lsnsYxns",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "responseType",
+						"value": "stream",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\":\"Password1!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/nft/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"nft",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/nft/pin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmNvbWVyIjp7Im5hbWUiOiJ3ZWIgYmFja2VuZCIsImFkZHJlc3MiOiJodHRwczovL2VyLndlYmJhY2tlbmQuc2FtcGxlIn0sImlhdCI6MTY3NjY5NDUzMn0.vKrFKWUMedozm89OHmcHYFHULmdWxCjy5qtXQxFB4gI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"FarmerName\": \"Jehan Fernando\",\r\n    \"RegistrationNo\": \"1\",\r\n    \"Species\": \"Jack\",\r\n    \"NoOfERUnits\": \"23\",\r\n    \"ServicingYear\": \"4\",\r\n    \"H2O\": \"23\",\r\n    \"O2\": \"23\",\r\n    \"CapturedCarbon\": \"23\",\r\n    \"imageUrl\": \"https://i.postimg.cc/sxnM7tyX/two-trees-of-valinor-by-noei1984-dsfqt0-pre.jpg\",\r\n    \"walletAddress\": \"0x1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/nft/pin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"nft",
+						"pin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/nft/mint",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmNvbWVyIjp7Im5hbWUiOiJ3ZWIgYmFja2VuZCIsImFkZHJlc3MiOiJodHRwczovL2VyLndlYmJhY2tlbmQuc2FtcGxlIn0sImlhdCI6MTY3NjY5NDUzMn0.vKrFKWUMedozm89OHmcHYFHULmdWxCjy5qtXQxFB4gI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"metadataUri\": \"https://gateway.pinata.cloud/ipfs/bafkreigpmdvjmbffia7qpjfthcnpx3lfx3ibglhr5vhqpiayfk7sshekxq\",\r\n    \"investorId\": 202\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/nft/mint",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"nft",
+						"mint"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

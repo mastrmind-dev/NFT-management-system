@@ -49,12 +49,12 @@ exports.pin = async (req, res) => {
 };
 
 exports.mint = async (req, res) => {
-    const { metadataUri } = req.body;
+    const { metadataUri, investorId } = req.body;
     try {
-        const mint = await Blockchain.mint(metadataUri);
+        const mint = await Blockchain.mint(metadataUri, investorId);
         console.log('Mint result:', mint);
         if (mint === SuccessConstants.MINTING_SUCCEEDED) {
-            res.status(200).json({ message: "Successfully Minted." })
+            res.status(200).json({ message: "Successfully Minted", NFTUri: `https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/${investorId}` })
         } else { throw new Error(ErrorConstants.MINITING_FAILED); }
     } catch (e) {
         console.log(e.message);
@@ -64,4 +64,54 @@ exports.mint = async (req, res) => {
 
 exports.burn = async (req, res) => {
     res.send({ message: "burn is about to happen..." })
+}
+
+exports.store = async (req, res) => {
+    const {
+        investorID,
+        farmerName,
+        registrationNo,
+        species,
+        eRUnits,
+        servicingYear,
+        h2o,
+        o2,
+        capturedCarbon
+    } = req.body;
+
+    try {
+        const store = await Blockchain.storeAnnualData(
+            investorID,
+            farmerName,
+            registrationNo,
+            species,
+            eRUnits,
+            servicingYear,
+            h2o,
+            o2,
+            capturedCarbon
+        );
+        if (store === SuccessConstants.STORING_SUCCEEDED) {
+            res.status(200).json({ message: "Data stored successfully!" });
+        } else {
+            res.status(500).json({ error: "Data storing failed!" });
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+exports.retrieve = async (req, res) => {
+    const { investorID, servicingYear } = req.body;
+
+    try {
+        const data = await Blockchain.getAnnualData(investorID, servicingYear);
+        if (data !== ErrorConstants.RETRIEVING_FAILED) {
+            res.status(200).json({ message: SuccessConstants.RETRIEVING_SUCCEEDED, data: `${data}` });
+        } else {
+            res.status(500).json({ error: ErrorConstants.RETRIEVING_FAILED });
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
 }
